@@ -3,7 +3,7 @@ import { PrismaClient } from '@prisma/client/edge'
 import { withAccelerate } from '@prisma/extension-accelerate'
 import { sign } from 'hono/jwt'
 import { signinInput, signupInput } from 'techblog-common';
-
+import bcrypt from 'bcryptjs';
 
 export const userRouter = new Hono<{
     Bindings: {
@@ -19,7 +19,6 @@ export const userRouter = new Hono<{
 
 
 userRouter.post('/signup', async (c) => {
-
     const prisma = new PrismaClient({
         datasourceUrl: c.env.DATABASE_URL,
     }).$extends(withAccelerate())
@@ -33,15 +32,16 @@ userRouter.post('/signup', async (c) => {
         })
     }
 
+    const hashedPassword = await bcrypt.hash(body.password, 10);
+
     const user = await prisma.user.create({
         data: {
             email: body.email,
-            password: body.password
+            password: hashedPassword,
+            name: body.name
         }
     })
-
-
-
+    console.log(user);
     const token = await sign({ id: user.id }, c.env.JWT_SECRET)
 
     return c.json({
@@ -79,6 +79,14 @@ userRouter.post('/signin', async (c) => {
         })
     }
 
+    const isPasswordValid = await bcrypt.compare(body.password, user.password);
+    if (!isPasswordValid) {
+        c.status(403);
+        return c.json({
+            error: "Invalid credentials!!",
+        });
+    }
+
     const token = await sign({ id: user.id }, c.env.JWT_SECRET)
 
     return c.json({
@@ -86,3 +94,12 @@ userRouter.post('/signin', async (c) => {
     })
 
 })
+
+userRouter.post('/signout', async (c) => {
+
+    return c.json({
+        message: "Successfully signed out"
+    });
+})
+
+

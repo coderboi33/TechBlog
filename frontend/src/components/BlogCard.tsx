@@ -4,19 +4,23 @@ interface BlogCardProps {
     content: string;
     publishedDate: string;
     id: string;
+    authorName: string;
 }
 
 export const BlogCard = ({
     id,
     title,
     content,
-    publishedDate
+    publishedDate,
+    authorName
 }: BlogCardProps) => {
     return <Link to={`/blog/${id}`}>
-        <div className="p-4 border-b border-slate-200 pb-4 w-screen max-w-screen-md cursor-pointer">
+        <div className="p-4 border rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200 bg-blue-50 w-screen max-w-screen-lg cursor-pointer">
             <div className="flex">
-                <Avatar name="User" />
-                <div className="font-extralight pl-2 text-sm flex justify-center flex-col"></div>
+                <Avatar name={authorName} />
+                <div className="font-extralight pl-2 text-sm flex justify-center flex-col">
+                    {authorName}
+                </div>
                 <div className=" justify-center pl-2 flex  flex-col">
                     <Circle />
                 </div>
@@ -45,9 +49,10 @@ export function Circle() {
 
 export function Avatar({ name = "U", size = "small" }: { name?: string, size?: "small" | "big" }) {
     return (
-        <div className={`relative inline-flex items-center justify-center overflow-hidden bg-gray-600 rounded-full ${size === "small" ? "w-6 h-6" : "w-10 h-10"}`}>
-            <span className={`${size === "small" ? "text-xs" : "text-md"} font-extralight text-gray-600 dark:text-gray-300`}>
-                {name?.[0] || "U"}
+        <div className={`relative inline-flex items-center justify-center overflow-hidden bg-gradient-to-br from-indigo-700 to-purple-800 rounded-full ${size === "small" ? "w-6 h-6" : "w-12 h-12"} shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105`}>
+            <div className="absolute inset-0 bg-gradient-to-br from-indigo-600 to-purple-700 opacity-20"></div>
+            <span className={`${size === "small" ? "text-xs" : "text-lg"} font-semibold text-white relative z-10`}>
+                {name ? name[0].toUpperCase() : "U"}
             </span>
         </div>
     );

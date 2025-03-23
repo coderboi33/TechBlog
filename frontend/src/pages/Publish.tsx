@@ -3,11 +3,16 @@ import axios from "axios";
 import { BACKEND_URL } from "../config";
 import { useNavigate } from "react-router-dom";
 import { ChangeEvent, useState } from "react";
-
+import { useCurrentUser } from "../hooks";
 export const Publish = () => {
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
     const navigate = useNavigate();
+    const { user } = useCurrentUser();
+
+    if (!user) {
+        navigate('/signin');
+    }
 
     const handlePublish = async () => {
         try {
@@ -27,9 +32,10 @@ export const Publish = () => {
         }
     };
 
+
     return (
         <div>
-            <Appbar />
+            <Appbar authorName={user?.name || "Anonymous"} />
             <div className="flex justify-center w-full pt-8">
                 <div className="max-w-screen-lg w-full">
                     <input

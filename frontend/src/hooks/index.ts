@@ -4,13 +4,22 @@ import { BACKEND_URL } from "../config";
 
 
 export interface Blog {
-    id: string; // UUID format
+    id: string;
     title: string;
     content: string;
-    published: boolean; // Added to reflect response structure
-    authorId: string; // Added to reflect response structure
+    published: boolean;
+    authorId: string;
+    author: {
+        name: string | null;
+    };
 }
 
+export interface User {
+    id: string;
+    name: string;
+    email: string;
+    // Add other user properties as needed
+}
 
 export const useBlog = ({ id }: { id: string }) => {
     const [loading, setLoading] = useState(true);
@@ -45,13 +54,45 @@ export const useBlogs = () => {
             }
         })
             .then(response => {
+                console.log("Blogs response:", response.data);
                 setBlogs(response.data.blogs);
                 setLoading(false);
             })
+            .catch(error => {
+                console.error("Error fetching blogs:", error);
+                setLoading(false);
+            });
     }, [])
 
     return {
         loading,
         blogs
+    }
+}
+
+export const useCurrentUser = () => {
+    const [loading, setLoading] = useState(true);
+    const [user, setUser] = useState<User>();
+
+    useEffect(() => {
+        axios.get(`${BACKEND_URL}/api/v1/blog/current`, {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")}`
+            }
+        })
+            .then(response => {
+                setUser(response.data.user);
+                setLoading(false);
+            })
+            .catch(error => {
+                console.error("Error fetching current user:", error);
+                setLoading(false);
+            });
+    }, [])
+    console.log("User:", user);
+
+    return {
+        loading,
+        user
     }
 }

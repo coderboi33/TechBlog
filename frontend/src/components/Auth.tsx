@@ -17,23 +17,26 @@ export const Auth = ({ type }: { type: "signup" | "signin" }) => {
     async function sendRequest() {
         setLoading(true); // Set loading to true
         try {
+            console.log("Sending data to backend:", postInputs); // Log the data being sent
             const response = await axios.post(
                 `${BACKEND_URL}/api/v1/user/${type === "signup" ? "signup" : "signin"}`,
                 postInputs
             );
-            const token = response.data.jwt; // Adjust based on your API response structure
-
-            // Ensure you are accessing the token correctly
+            console.log("Backend response:", response.data); // Log the response data
+            const token = response.data.jwt;
 
             localStorage.setItem("token", token);
-
-
             navigate("/blogs");
         } catch (e) {
-            console.error("Error during request:", e); // Log error details
-            alert("An error occurred. Please try again.");
+            if (axios.isAxiosError(e)) {
+                console.error("Error response:", e.response?.data); // Log the error response
+                alert(e.response?.data?.message || "An error occurred. Please try again.");
+            } else {
+                console.error("Error during request:", e);
+                alert("An error occurred. Please try again.");
+            }
         } finally {
-            setLoading(false); // Set loading back to false
+            setLoading(false);
         }
     }
 
