@@ -3,7 +3,6 @@ import { LabelledInput } from "./LabelledInput";
 import { useState } from "react";
 import { SignupInput } from "techblog-common";
 import axios from "axios";
-import { BACKEND_URL } from "../config";
 
 export const Auth = ({ type }: { type: "signup" | "signin" }) => {
     const [postInputs, setPostInputs] = useState<SignupInput>({
@@ -19,7 +18,7 @@ export const Auth = ({ type }: { type: "signup" | "signin" }) => {
         try {
             console.log("Sending data to backend:", postInputs); // Log the data being sent
             const response = await axios.post(
-                `${BACKEND_URL}/api/v1/user/${type === "signup" ? "signup" : "signin"}`,
+                `${import.meta.env.VITE_REACT_APP_BACKEND_URL}/api/v1/user/${type === "signup" ? "signup" : "signin"}`,
                 postInputs
             );
             console.log("Backend response:", response.data); // Log the response data

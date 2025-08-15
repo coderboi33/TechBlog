@@ -1,7 +1,6 @@
 import axios from "axios";
 import { Avatar } from "./BlogCard"
 import { Link, useNavigate } from "react-router-dom"
-import { BACKEND_URL } from "../config";
 
 interface AppbarProps {
     authorName: string;
@@ -12,7 +11,7 @@ export const Appbar = ({ authorName }: AppbarProps) => {
 
     const signOut = async () => {
         try {
-            const response = await axios.post(`${BACKEND_URL}/api/v1/user/signout`);
+            const response = await axios.post(`${import.meta.env.VITE_REACT_APP_BACKEND_URL}/api/v1/user/signout`);
 
             if (response.status === 200) {
                 // Assuming the token is stored in local storage

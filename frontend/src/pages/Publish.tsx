@@ -1,6 +1,5 @@
 import { Appbar } from "../components/Appbar";
 import axios from "axios";
-import { BACKEND_URL } from "../config";
 import { useNavigate } from "react-router-dom";
 import { ChangeEvent, useState } from "react";
 import { useCurrentUser } from "../hooks";
@@ -17,7 +16,7 @@ export const Publish = () => {
     const handlePublish = async () => {
         try {
             const response = await axios.post(
-                `${BACKEND_URL}/api/v1/blog`,
+                `${import.meta.env.VITE_REACT_APP_BACKEND_URL}/api/v1/blog`,
                 { title, content: description },
                 {
                     headers: {

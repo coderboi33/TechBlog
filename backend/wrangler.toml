@@ -4,5 +4,5 @@ compatibility_date = "2024-10-03"
 compatibility_flags = [ "nodejs_compat" ]
 
 [vars]
-DATABASE_URL=""
-JWT_SECRET=""
+DATABASE_URL="postgresql://blog_owner:ivdN4o6QwSKB@ep-misty-mud-a1vnjs9i.ap-southeast-1.aws.neon.tech/blog?sslmode=require"
+JWT_SECRET="MYsecretkjhrfd873fw"
