@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+
 interface BlogCardProps {
     title: string;
     content: string;
@@ -14,37 +15,54 @@ export const BlogCard = ({
     publishedDate,
     authorName
 }: BlogCardProps) => {
-    return <Link to={`/blog/${id}`}>
-        <div className="p-4 border rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200 bg-blue-50 w-screen max-w-screen-lg cursor-pointer">
-            <div className="flex">
-                <Avatar name={authorName} />
-                <div className="font-extralight pl-2 text-sm flex justify-center flex-col">
-                    {authorName}
+
+    // --- 1. Extract the Image URL and Text Content ---
+    const urlRegex = /\((https?:\/\/[^\s]+)\)/;
+    const match = content.match(urlRegex);
+    const imageUrl = match ? match[1] : null;
+    const textContent = content.replace(/!\[.*?\]\(.*?\)\s*/, "");
+    // ----------------------------------------------------
+
+    return (
+        <Link to={`/blog/${id}`}>
+            <div className="p-4 border rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200 bg-blue-50 w-screen max-w-screen-lg cursor-pointer">
+                <div className="flex items-center mb-4">
+                    <Avatar name={authorName} />
+                    <div className="font-extralight pl-2 text-sm flex justify-center flex-col">{authorName}</div>
+                    <div className="mx-2 flex items-center"><Circle /></div>
+                    <div className="pl-2 font-thin text-slate-500 text-sm flex justify-center flex-col">{publishedDate}</div>
                 </div>
-                <div className=" justify-center pl-2 flex  flex-col">
-                    <Circle />
+
+                <div className="flex">
+                    {/* --- 2. Conditionally Render the Image Thumbnail --- */}
+                    {imageUrl && (
+                        <div className="flex-shrink-0 mr-4">
+                            <img
+                                src={imageUrl}
+                                alt="Blog thumbnail"
+                                className="w-32 h-24 object-cover rounded-md"
+                            />
+                        </div>
+                    )}
+                    {/* ---------------------------------------------------- */}
+
+                    <div className="flex-grow">
+                        <div className="text-xl font-semibold pt-2">{title}</div>
+                        <div className="text-md font-thin">
+                            {textContent.slice(0, 100) + "..."}
+                        </div>
+                        <div className="text-slate-500 text-sm font-thin pt-4">
+                            {`${Math.ceil(textContent.length / 100)} minute(s) read`}
+                        </div>
+                    </div>
                 </div>
-                <div className="pl-2 font-thin text-slate-500 text-sm flex justify-center flex-col">
-                    {publishedDate}
-                </div>
             </div>
-            <div className="text-xl font-semibold pt-2">
-                {title}
-            </div>
-            <div className="text-md font-thin">
-                {content.slice(0, 100) + "..."}
-            </div>
-            <div className="text-slate-500 text-sm font-thin pt-4">
-                {`${Math.ceil(content.length / 100)} minute(s) read`}
-            </div>
-        </div>
-    </Link>
-}
+        </Link>
+    );
+};
 
 export function Circle() {
-    return <div className="h-1 w-1 rounded-full bg-slate-500">
-
-    </div>
+    return <div className="h-1 w-1 rounded-full bg-slate-500"></div>;
 }
 
 export function Avatar({ name = "U", size = "small" }: { name?: string, size?: "small" | "big" }) {
