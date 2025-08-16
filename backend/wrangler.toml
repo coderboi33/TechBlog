@@ -1,8 +1,10 @@
+# wrangler.toml
+
 name = "backend"
 main = "src/index.ts"
 compatibility_date = "2024-10-03"
 compatibility_flags = [ "nodejs_compat" ]
 
 [vars]
-DATABASE_URL="postgresql://blog_owner:ivdN4o6QwSKB@ep-misty-mud-a1vnjs9i.ap-southeast-1.aws.neon.tech/blog?sslmode=require"
-JWT_SECRET="MYsecretkjhrfd873fw"
+DATABASE_URL = "prisma://accelerate.prisma-data.net/?api_key=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqd3RfaWQiOjEsInNlY3VyZV9rZXkiOiJza184NlgzUmFJWTB2Tk9DbkJhcDU5eFMiLCJhcGlfa2V5IjoiMDFLMlFITThHOUJYWTJCU01TN05KQlhNRE4iLCJ0ZW5hbnRfaWQiOiI1MDVkN2MzZmFjMjQwZGYyODE1Mzk1OTcwZDg0MWVjMzAyYjNjZWMzZjJiNmIxMDRmZjQwNTZhMWE1ZWI4OWU0IiwiaW50ZXJuYWxfc2VjcmV0IjoiMDRkZDA3ODctZWU4ZS00NjUzLTlmZjItNGJjODg2YmExOGU5In0.iYtca6SoNqHBpObgfec3_gzNa8uOHwldPEgi9kKhViM"
+JWT_SECRET = "MYsecretkjhrfd873fw"

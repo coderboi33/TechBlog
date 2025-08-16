@@ -1,9 +1,22 @@
-import { Blog, useCurrentUser } from "../hooks"
-import { Appbar } from "./Appbar"
-import { Avatar } from "./BlogCard"
+import { Blog, useCurrentUser } from "../hooks";
+import { Appbar } from "./Appbar";
+import { Avatar } from "./BlogCard";
 
 export const FullBlog = ({ blog }: { blog: Blog }) => {
     const { user } = useCurrentUser();
+
+    // --- 1. Extract the Image URL and Text Content ---
+    const content = blog.content || "";
+
+    // This is a "regular expression" that finds the URL inside ![]()
+    const urlRegex = /\((https?:\/\/[^\s]+)\)/;
+    const match = content.match(urlRegex);
+    const imageUrl = match ? match[1] : null;
+
+    // This removes the entire image link to get only the text
+    const textContent = content.replace(/!\[.*?\]\(.*?\)\s*/, "");
+    // ----------------------------------------------------
+
     return (
         <div className="min-h-screen bg-blue-50">
             <Appbar authorName={user?.name || "Anonymous"} />
@@ -17,11 +30,20 @@ export const FullBlog = ({ blog }: { blog: Blog }) => {
                             </h1>
                             <div className="flex items-center text-blue-600 mb-8">
                                 <span className="text-sm">
-                                    Posted on December 2, 2023
+                                    Posted on August 16, 2025
                                 </span>
                             </div>
                             <div className="prose prose-lg max-w-none prose-blue">
-                                {blog.content}
+                                {/* --- 2. Render the Image and Text --- */}
+                                {imageUrl && (
+                                    <img
+                                        src={imageUrl}
+                                        alt="Blog cover"
+                                        className="max-w-full h-auto rounded-lg mb-8"
+                                    />
+                                )}
+                                <p>{textContent}</p>
+                                {/* ----------------------------------- */}
                             </div>
                         </article>
                     </div>
@@ -50,5 +72,5 @@ export const FullBlog = ({ blog }: { blog: Blog }) => {
                 </div>
             </div>
         </div>
-    )
-}
+    );
+};

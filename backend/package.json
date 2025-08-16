@@ -5,12 +5,14 @@
     "deploy": "wrangler deploy --minify"
   },
   "dependencies": {
-    "@prisma/client": "^5.20.0",
+    "@aws-sdk/client-s3": "^3.864.0",
+    "@aws-sdk/s3-request-presigner": "^3.864.0",
+    "@prisma/client": "latest",
     "@prisma/extension-accelerate": "^1.2.1",
     "bcryptjs": "^3.0.2",
     "dotenv": "^16.4.5",
     "hono": "^4.6.3",
-    "prisma": "^5.20.0",
+    "prisma": "latest",
     "techblog-common": "^1.0.1"
   },
   "devDependencies": {
