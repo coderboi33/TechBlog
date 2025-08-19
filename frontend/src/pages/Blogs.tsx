@@ -6,7 +6,6 @@ import { useBlogs, useCurrentUser } from "../hooks";
 export const Blogs = () => {
     const { loading, blogs } = useBlogs();
     const { user } = useCurrentUser();
-    console.log(user);
 
     if (loading) {
         return <div>
