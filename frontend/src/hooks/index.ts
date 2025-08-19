@@ -87,7 +87,6 @@ export const useCurrentUser = () => {
                 setLoading(false);
             });
     }, [])
-    console.log("User:", user);
 
     return {
         loading,
